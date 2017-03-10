@@ -64,7 +64,12 @@ setup(
     ],
     license="MIT",
     zip_safe=False,
-    keywords='django-dandelion',
+    keywords=[
+        'django-dandelion',
+        'dandelion',
+        'api',
+        'semantic text analytics'
+    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Django',

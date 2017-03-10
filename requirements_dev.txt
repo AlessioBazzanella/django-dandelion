@@ -1,10 +1,17 @@
+# Runtime dependencies
+Django
+six
+requests
+
+# Testing
+coverage
+flake8
+tox
+
+# Documentation
+Sphinx
+sphinx-rtd-theme
+
+# Other tools
 bumpversion==0.5.3
 wheel==0.29.0
-
-Django>=1.8
-six>=1.10.0
-requests>=2.13.0
-flake8>=3.3.0
-coverage>=4.3.4
-tox>=2.6.0
-sphinx-rtd-theme>=0.2.4

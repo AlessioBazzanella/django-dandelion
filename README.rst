@@ -5,12 +5,20 @@ Django Dandelion
 
 .. image:: https://badge.fury.io/py/django-dandelion.svg
     :target: https://badge.fury.io/py/django-dandelion
+    :alt: Version
 
 .. image:: https://travis-ci.org/AlessioBazzanella/django-dandelion.svg?branch=master
     :target: https://travis-ci.org/AlessioBazzanella/django-dandelion
+    :alt: Build
 
 .. image:: https://codecov.io/gh/AlessioBazzanella/django-dandelion/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/AlessioBazzanella/django-dandelion
+    :alt: Codecov
+
+.. image:: https://requires.io/github/AlessioBazzanella/django-dandelion/requirements.svg?branch=master
+    :target: https://requires.io/github/AlessioBazzanella/django-dandelion/requirements/?branch=master
+    :alt: Requirements Status
+
 
 Use the Dandelion_ API with Django
 
@@ -61,8 +69,9 @@ Running Tests
 
 Does the code actually work?
 
-::
+.. code-block:: bash
 
-    source <YOURVIRTUALENV>/bin/activate
-    (myenv) $ pip install tox
-    (myenv) $ tox
+    # Add "export DANDELION_TOKEN=<your dandelion token>" to <YOURVIRTUALENV>/bin/activate
+    $ source <YOURVIRTUALENV>/bin/activate
+    $ (myenv) $ pip install tox
+    $ (myenv) $ tox
