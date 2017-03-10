@@ -2,6 +2,6 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 default_app_config = 'django_dandelion.apps.DandelionConfig'
