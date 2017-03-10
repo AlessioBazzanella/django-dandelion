@@ -102,7 +102,6 @@ class EntityExtraction(BaseDandelionParamsRequest):
                 | Type	string
                 | Default value: <empty string>
                 | Accepted values: any valid spots-ID
-
         """
 
         keys_allowed = [
@@ -128,6 +127,98 @@ class EntityExtraction(BaseDandelionParamsRequest):
             extra_url=('datatxt', 'nex', 'v1'),
             method='post'
         )
+
+    class UserDefinedSpots(BaseDandelionRequest):
+        """
+        Sometimes you may find yourself in need of extending our internal knowledge graph, perhaps because of some
+        domain-specific terminology you want Dandelion API to be able to recognize. If this is the case,
+        User-defined spots may help you!
+        With User-defined spots you can extend the internal knowledge graph by providing new terms to match against its
+        entities, or boosting the already provided ones. Developing a mobile app that involves much slang? Define a
+        set of custom-spots and use them in all the Entity Extraction API methods!
+        Dandelion API provides a handy endpoint for managing all your custom spot sets, following the CRUD(L) paradigm.
+        Once you defined your own spots, enable them by using the dedicated custom_spots parameter available in most of
+        the Entity Extraction APIs.
+
+        https://dandelion.eu/docs/api/datatxt/custom-spots/v1/
+
+        You can group your own spots together and enable/disable them on each call to Entity Extraction API.
+        A "set" of user-defined spots is simply represented as a list of Spot objects.
+
+        The JSON that describes User-defined spots has the following structure:
+
+        {
+          "lang": "The language of the spots",
+          "description": "A human-readable string you can use to describe this set of spots",
+          "list": [
+            {
+              "spot": "The new spot",
+              "topic": "The entity linked to the spot",
+              "greedy": "Is this spot greedy? (optional, see below)",
+              "exactMatch": "Must this spot be an exact match? (optional, see below)"
+            }
+          ]
+        }
+        """
+
+        def create(self, data):
+            """
+            :param data: The set of spots you want to create.
+            :return: The set of spots you just created.
+            """
+
+            return self._do_request(
+                extra_url=('datatxt', 'custom-spots', 'v1'),
+                method='post',
+                extra_dict={'data': data}
+            )
+
+        def read(self, id):
+            """
+            :param id: The id of the spots you want to fetch.
+            :return: The sposts with the given id.
+            """
+
+            return self._do_request(
+                extra_url=('datatxt', 'custom-spots', 'v1'),
+                method='get',
+                extra_dict={'id': id}
+            )
+
+        def update(self, id, data):
+            """
+            :param id: The id of the spots you want to update.
+            :param data: The updated spots.
+            :return: The newly updated spots.
+            """
+
+            return self._do_request(
+                extra_url=('datatxt', 'custom-spots', 'v1'),
+                method='put',
+                extra_dict={'id': id, 'data': data}
+            )
+
+        def delete(self, id):
+            """
+            :param id: The id of the spots you want to delete.
+            :return: The response of the deletion of the spots.
+            """
+
+            return self._do_request(
+                extra_url=('datatxt', 'custom-spots', 'v1'),
+                method='delete',
+                extra_dict={'id': id}
+            )
+
+        def list(self):
+            """
+            :return: A list of personal spots.
+            """
+
+            return self._do_request(
+                extra_url=('datatxt', 'custom-spots', 'v1'),
+                method='get'
+            )
 
 
 class TextSimilarity(BaseDandelionParamsRequest):
@@ -350,7 +441,50 @@ class TextClassification(BaseDandelionParamsRequest):
         )
 
     class UserDefinedClassifiers(BaseDandelionRequest):
+        """
+        Dandelion provides a handy endpoint for managing all your Text Classification API models, following the CRUD(L)
+        paradigm. With this endpoint you will be able to integrate our API into your own applications. If you have
+        already created your model and you want to try it out, please refer to the Text Classification API Reference.
+
+        https://dandelion.eu/docs/api/datatxt/cl/models/v1/
+
+        A Text Classification API model is simply composed by a list of categories, each defined as a set of entities
+        represented as (weighed) Wikipedia pages, which "describe" the category itself. Writing your own model is quite
+        simple! Need a Sport category? You could represent it as:
+        - http://en.wikipedia.org/wiki/Baseball
+        - http://en.wikipedia.org/wiki/Basketball
+        - http://en.wikipedia.org/wiki/Football
+        - ...
+        around 10 entities per category usually do the trick.
+
+        In general, a model is defined following this structure:
+
+        {
+          "lang": "The language the model will work on",
+          "description": "A human-readable string you can use to describe this model",
+          "categories": [
+            {
+              "name": "The category name",
+              "topics": {
+                "topic1": "weight",
+                "topic2": "weight",
+                "...": "...",
+              }
+            }
+          ]
+        }
+
+        Topics are represented as wikipedia pages. You can refer to each topic by its URI
+        http://en.wikipedia.org/wiki/Baseball, its title Baseball or its wikipedia page ID 3850.
+        In this two last cases, the lang attribute will be used to select the Wikipedia to match against.
+        """
+
         def create(self, data):
+            """
+            :param data: The model you want to create.
+            :return: The model you just created.
+            """
+
             return self._do_request(
                 extra_url=('datatxt', 'cl', 'models', 'v1'),
                 method='post',
@@ -358,6 +492,11 @@ class TextClassification(BaseDandelionParamsRequest):
             )
 
         def read(self, id):
+            """
+            :param id: The id of the model you want to fetch.
+            :return: The model with the given id.
+            """
+
             return self._do_request(
                 extra_url=('datatxt', 'cl', 'models', 'v1'),
                 method='get',
@@ -365,6 +504,12 @@ class TextClassification(BaseDandelionParamsRequest):
             )
 
         def update(self, id, data):
+            """
+            :param id: The id of the model you want to update.
+            :param data: The updated model.
+            :return: The newly updated model.
+            """
+
             return self._do_request(
                 extra_url=('datatxt', 'cl', 'models', 'v1'),
                 method='put',
@@ -372,6 +517,11 @@ class TextClassification(BaseDandelionParamsRequest):
             )
 
         def delete(self, id):
+            """
+            :param id: The id of the model you want to delete.
+            :return: The response of the deletion of the model.
+            """
+
             return self._do_request(
                 extra_url=('datatxt', 'cl', 'models', 'v1'),
                 method='delete',
@@ -379,6 +529,10 @@ class TextClassification(BaseDandelionParamsRequest):
             )
 
         def list(self):
+            """
+            :return: A list of personal models.
+            """
+
             return self._do_request(
                 extra_url=('datatxt', 'cl', 'models', 'v1'),
                 method='get'

@@ -34,6 +34,40 @@ class TestDataTXT(TestCase):
             datatxt.params = 'lang', 'eng'
             datatxt.analyze()
 
+        # SPOTS
+        datatxt = EntityExtraction()
+        spots = datatxt.UserDefinedSpots()
+        spots.list()
+        obj = spots.create(data=u'{"description": "My botanical custom spots","lang": "en","list": ['
+                                u'{"spot": "làres","topic": "Larix decidua"},'
+                                u'{"spot": "stropèr","topic": "Salix viminalis"},'
+                                u'{"spot": "noselèr","topic": "Corylus avellana"},'
+                                u'{"spot": "pomèr","topic": "Malus domestica"},'
+                                u'{"spot": "brugnèra","topic": "Prunus domestica"}]}')
+        obj = spots.update(data=u'{"description": "My botanical custom spots","lang": "en","list": ['
+                                u'{"spot": "làres","topic": "Larix decidua"},'
+                                u'{"spot": "stropèr","topic": "Salix viminalis"},'
+                                u'{"spot": "noselèr","topic": "Corylus avellana"},'
+                                u'{"spot": "pomèr","topic": "Malus domestica"},'
+                                u'{"spot": "brugnèra","topic": "Prunus domestica"}]}',
+                           id=obj.id)
+        obj = spots.read(id=obj.id)
+        datatxt.params = 'text', u'Larix decidua, commonly called European or common larch, is a deciduous conifer ' \
+                                 u'although it looks like a needled evergreen in summer. It is a large tree that ' \
+                                 u'will grow to 60-100’ tall with a pyramidal shape, horizontal branching and ' \
+                                 u'drooping branchlets. '
+        datatxt.params = 'custom_spots', obj.id
+        datatxt.params = 'min_confidence', 0.8
+        results = datatxt.analyze()
+        datatxt.analyze()  # cache
+        spots.delete(id=obj.id)
+
+        self.assertEqual(
+            {annotation.uri for annotation in results.annotations},
+            {'http://en.wikipedia.org/wiki/Larix_decidua', 'http://en.wikipedia.org/wiki/Larch',
+             'http://en.wikipedia.org/wiki/Deciduous', 'http://en.wikipedia.org/wiki/Pinophyta'}
+        )
+
     def test_sim(self):
         datatxt = TextSimilarity()
         datatxt.params = 'text1', 'Reports that the NSA eavesdropped on world leaders have "severely' \

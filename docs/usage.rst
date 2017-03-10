@@ -82,6 +82,86 @@ DataTXT
      u'time': 0,
      u'timestamp': u'2017-03-09T16:10:46.703'}
 
+    >>> entityExtraction = EntityExtraction()
+    >>> spots = entityExtraction.UserDefinedSpots()  # spots = EntityExtraction.UserDefinedSpots()
+    >>> obj = spots.create(data=u'{"description": "My botanical custom spots","lang": "en","list": [{"spot": "làres","topic": "Larix decidua"},{"spot": "stropèr","topic": "Salix viminalis"},{"spot": "noselèr","topic": "Corylus avellana"},{"spot": "pomèr","topic": "Malus domestica"},{"spot": "brugnèra","topic": "Prunus domestica"}]}')
+    >>> obj
+    {u'created': u'2017-03-10T11:34:45',
+     u'data': {u'defaults': {u'exactMatch': False,
+       u'greedy': True,
+       u'namedEntity': False},
+      u'description': u'My botanical custom spots',
+      u'lang': u'en',
+      u'list': [{u'exactMatch': False,
+        u'greedy': True,
+        u'namedEntity': False,
+        u'spot': u'l\xe0res',
+        u'topic': u'Larix decidua'},
+       {u'exactMatch': False,
+        u'greedy': True,
+        u'namedEntity': False,
+        u'spot': u'strop\xe8r',
+        u'topic': u'Salix viminalis'},
+       {u'exactMatch': False,
+        u'greedy': True,
+        u'namedEntity': False,
+        u'spot': u'nosel\xe8r',
+        u'topic': u'Corylus avellana'},
+       {u'exactMatch': False,
+        u'greedy': True,
+        u'namedEntity': False,
+        u'spot': u'pom\xe8r',
+        u'topic': u'Malus domestica'},
+       {u'exactMatch': False,
+        u'greedy': True,
+        u'namedEntity': False,
+        u'spot': u'brugn\xe8ra',
+        u'topic': u'Prunus domestica'}]},
+     u'dataType': u'custom-spots',
+     u'id': u'b1290d8a-4af3-4c70-85cc-1eb6a97f7725',
+     u'modified': u'2017-03-10T11:34:45',
+     u'timestamp': u'2017-03-09T16:10:46.703'}
+    >>> entityExtraction.params = 'text', u'Larix decidua, commonly called European or common larch, is a deciduous conifer although it looks like a needled evergreen in summer. It is a large tree that will grow to 60-100’ tall with a pyramidal shape, horizontal branching and drooping branchlets.'
+    >>> entityExtraction.params = 'custom_spots', obj.id
+    >>> entityExtraction.params = 'min_confidence', 0.8
+    >>> entityExtraction.analyze()
+    {u'annotations': [{u'confidence': 0.8759,
+       u'end': 13,
+       u'id': 1584580,
+       u'label': u'European larch',
+       u'spot': u'Larix decidua',
+       u'start': 0,
+       u'title': u'Larix decidua',
+       u'uri': u'http://en.wikipedia.org/wiki/Larix_decidua'},
+      {u'confidence': 0.8184,
+       u'end': 55,
+       u'id': 99384,
+       u'label': u'Larch',
+       u'spot': u'larch',
+       u'start': 50,
+       u'title': u'Larch',
+       u'uri': u'http://en.wikipedia.org/wiki/Larch'},
+      {u'confidence': 0.829,
+       u'end': 71,
+       u'id': 66722,
+       u'label': u'Deciduous',
+       u'spot': u'deciduous',
+       u'start': 62,
+       u'title': u'Deciduous',
+       u'uri': u'http://en.wikipedia.org/wiki/Deciduous'},
+      {u'confidence': 0.9061,
+       u'end': 79,
+       u'id': 68085,
+       u'label': u'Conifer',
+       u'spot': u'conifer',
+       u'start': 72,
+       u'title': u'Pinophyta',
+       u'uri': u'http://en.wikipedia.org/wiki/Pinophyta'}],
+     u'lang': u'en',
+     u'langConfidence': 1.0,
+     u'time': 12,
+     u'timestamp': u'2017-03-09T16:10:46.703'}
+
 - TextSimilarity (`Documentation <https://dandelion.eu/docs/api/datatxt/sim/v1/>`_)
 
 .. code-block:: python
@@ -118,16 +198,9 @@ DataTXT
     >>> from django_dandelion.datatxt import TextClassification
     >>> textClassification = TextClassification()
     >>> classifier = textClassification.UserDefinedClassifiers()  # classifier = TextClassification.UserDefinedClassifiers()
-    >>> obj = classifier.create(data=u'{"description": "My first model for classifying news","lang": "en",'
-                                     u'"categories": [{"name": "Sport","topics": '
-                                     u'{"http://en.wikipedia.org/wiki/Sport": 2.0,'
-                                     u'"http://en.wikipedia.org/wiki/Baseball": 1.0,'
-                                     u'"http://en.wikipedia.org/wiki/Basketball": 1.0,'
-                                     u'"http://en.wikipedia.org/wiki/Football": 1.0}},'
-                                     u'{"name": "Politics","topics": {"Politics": 2.0,"Politician": 1.5,'
-                                     u'"David Cameron": 1.0,"Angela Merkel": 1.0}}]}')
+    >>> obj = classifier.create(data=u'{"description": "My first model for classifying news","lang": "en","categories": [{"name": "Sport","topics": {"http://en.wikipedia.org/wiki/Sport": 2.0,"http://en.wikipedia.org/wiki/Baseball": 1.0,"http://en.wikipedia.org/wiki/Basketball": 1.0,"http://en.wikipedia.org/wiki/Football": 1.0}},{"name": "Politics","topics": {"Politics": 2.0,"Politician": 1.5,"David Cameron": 1.0,"Angela Merkel": 1.0}}]}')
     >>> obj
-    {u'created': u'2017-03-09T16:36:02',
+    {u'created': u'2017-03-09T16:10:46.703',
      u'data': {u'categories': [{u'name': u'Sport',
         u'topics': {u'http://en.wikipedia.org/wiki/Baseball': 1.0,
          u'http://en.wikipedia.org/wiki/Basketball': 1.0,
