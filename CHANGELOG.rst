@@ -11,6 +11,15 @@ All notable changes to this project will be documented in this file.
 The format is based on KeepAChangelog_ and this project adheres to SemanticVersioning_.
 
 
+[0.1.3] - 2017-03-14
+++++++++++++++++++++
+
+Fixed
+~~~~~
+* Merge extra_dict with params in BaseDandelionParamsRequest._do_request
+* Fixed app name in documentation to add to ``INSTALLED_APPS``
+
+
 [0.1.2] - 2017-03-10
 ++++++++++++++++++++
 
