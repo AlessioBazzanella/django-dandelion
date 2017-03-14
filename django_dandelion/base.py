@@ -83,10 +83,15 @@ class BaseDandelionParamsRequest(BaseDandelionRequest):
         super(BaseDandelionParamsRequest, self).__init__()
 
     def _do_request(self, extra_url='', method='post', extra_dict=None, use_cache=DANDELION_USE_CACHE):
+        if extra_dict is None:
+            params = self.__params
+        else:
+            params = extra_dict.copy()
+            params.update(self.__params)
         return super(BaseDandelionParamsRequest, self)._do_request(
             extra_url=extra_url,
             method=method,
-            extra_dict=self.__params,
+            extra_dict=params,
             use_cache=use_cache
         )
 

@@ -36,13 +36,13 @@ Install Django Dandelion:
 
     $ pip install django-dandelion
 
-Add ``django-dandelion`` to your ``INSTALLED_APPS``
+Add ``django_dandelion`` to your ``INSTALLED_APPS``
 
 .. code-block:: python
 
     INSTALLED_APPS = [
         # ...
-        'django-dandelion',
+        'django_dandelion',
     ]
 
 Add the entry DANDELION_TOKEN. The recommended method is to setup your production keys using environment

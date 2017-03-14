@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 from django.test import TestCase
 
-from django_dandelion.base import AttributeDict
+from django_dandelion.base import AttributeDict, BaseDandelionParamsRequest
 from django_dandelion.datatxt import EntityExtraction
 from django_dandelion.exceptions import DandelionException
 
@@ -49,3 +49,15 @@ class TestCommon(TestCase):
     def test_delete_params(self):
         datatxt = EntityExtraction()
         del datatxt.params
+
+    def test_params_extradict(self):
+        datatxt = BaseDandelionParamsRequest(keys_allowed=[], keys_unique=[[]])
+        results = datatxt._do_request(
+            extra_url=('datatxt', 'nex', 'v1'),
+            method='post',
+            extra_dict={'text': 'They say Apple is better than Windows'}
+        )
+        self.assertEqual(
+            {annotation.uri for annotation in results.annotations},
+            {'http://en.wikipedia.org/wiki/Apple_Inc.', 'http://en.wikipedia.org/wiki/Microsoft_Windows'}
+        )
