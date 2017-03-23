@@ -18,7 +18,18 @@ Django Dandelion
 .. image:: https://requires.io/github/AlessioBazzanella/django-dandelion/requirements.svg?branch=master
     :target: https://requires.io/github/AlessioBazzanella/django-dandelion/requirements/?branch=master
     :alt: Requirements Status
+    
+.. image:: https://img.shields.io/github/issues/AlessioBazzanella/django-dandelion.svg
+    :target: https://github.com/AlessioBazzanella/django-dandelion/issues
+    :alt: Issues
+    
+.. image:: https://img.shields.io/pypi/pyversions/django-dandelion.svg
+    :target: https://img.shields.io/pypi/pyversions/django-dandelion.svg
+    :alt: Py versions
 
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://raw.githubusercontent.com/AlessioBazzanella/django-dandelion/master/LICENSE
+    :alt: License
 
 Use the Dandelion_ API with Django
 
