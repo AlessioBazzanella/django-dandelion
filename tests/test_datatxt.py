@@ -15,6 +15,7 @@ class TestDataTXT(TestCase):
         datatxt = EntityExtraction()
         datatxt.params = 'text', 'They say Apple is better than Windows'
         datatxt.params = 'lang', 'en'
+        datatxt.params = 'top_entities', 0
         datatxt.params = 'min_confidence', 0.6
         datatxt.params = 'min_length', 2
         datatxt.params = 'social.hashtag', False
@@ -23,6 +24,7 @@ class TestDataTXT(TestCase):
         datatxt.params = 'extra_types', ''
         datatxt.params = 'country', ''
         datatxt.params = 'custom_spots', ''
+        datatxt.params = 'epsilon', 0.3
         results = datatxt.analyze()
         datatxt.analyze()  # cache
 
@@ -78,6 +80,7 @@ class TestDataTXT(TestCase):
                                   'summit in Brussels.'
         datatxt.params = 'lang', 'en'
         datatxt.params = 'bow', 'never'
+        datatxt.params = 'nex.top_entities', 0
         datatxt.params = 'nex.min_confidence', 0.6
         datatxt.params = 'nex.min_length', 2
         datatxt.params = 'nex.social.hashtag', False
@@ -86,6 +89,7 @@ class TestDataTXT(TestCase):
         datatxt.params = 'nex.extra_types', ''
         datatxt.params = 'nex.country', ''
         datatxt.params = 'nex.custom_spots', ''
+        datatxt.params = 'nex.epsilon', 0.3
         results = datatxt.analyze()
         datatxt.analyze()  # cache
         self.assertGreater(results.similarity, 0.5)

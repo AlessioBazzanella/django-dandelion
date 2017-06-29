@@ -37,6 +37,18 @@ class EntityExtraction(BaseDandelionParamsRequest):
                 | Type: string
                 | Default value: auto
                 | Accepted values: de | en | es | fr | it | pt | auto
+            top_entities = The number of most important entities that must be included in the response.
+                If this value is greater than zero, a ranking algorithm will be applied to sort all entities by their
+                importance with respect to the input text, and the most important ones will be included in the response
+                in addition to the traditional annotations list. This can be useful if you are annotating long texts
+                where the annotations list could contain dozens of entities but you would like to select only a few of
+                them to represent the main topics of the text better.
+                For each entity, a score representing its importance will be included. Note that this score is not
+                absolute, but can be used to compare the importance of entities of the same text only.
+                | optional
+                | Type: integer
+                | Default value: 0
+                | Accepted values: 0 .. +inf
             min_confidence = The threshold for the confidence value; entities with a confidence value below this
                 threshold will be discarded. Confidence is a numeric estimation of the quality of the annotation, which
                 ranges between 0 and 1. A higher threshold means you will get less but more precise annotations.
@@ -102,11 +114,20 @@ class EntityExtraction(BaseDandelionParamsRequest):
                 | Type	string
                 | Default value: <empty string>
                 | Accepted values: any valid spots-ID
+            epsilon = This parameter defines whether the Entity Extraction API should rely more on the context or favor
+                more common topics to discover entities. Using an higher value favors more common topics, this may lead
+                to better results when processing tweets or other fragmented inputs where the context is not always
+                reliable.
+                | optional
+                | Type	float
+                | Default value: 0.3
+                | Accepted values: 0.0 .. 0.5
         """
 
         keys_allowed = [
             'text', 'url', 'html', 'html_fragment',
             'lang',
+            'top_entities',
             'min_confidence',
             'min_length',
             'social.hashtag',
@@ -115,6 +136,7 @@ class EntityExtraction(BaseDandelionParamsRequest):
             'extra_types',
             'country',
             'custom_spots',
+            'epsilon',
         ]
         keys_unique = [
             ['text', 'url', 'html', 'html_fragment'],
@@ -269,6 +291,18 @@ class TextSimilarity(BaseDandelionParamsRequest):
                 | Type: string
                 | Default value: never
                 | Accepted values: always | one_empty | both_empty | never
+            nex.top_entities = The number of most important entities that must be included in the response.
+                If this value is greater than zero, a ranking algorithm will be applied to sort all entities by their
+                importance with respect to the input text, and the most important ones will be included in the response
+                in addition to the traditional annotations list. This can be useful if you are annotating long texts
+                where the annotations list could contain dozens of entities but you would like to select only a few of
+                them to represent the main topics of the text better.
+                For each entity, a score representing its importance will be included. Note that this score is not
+                absolute, but can be used to compare the importance of entities of the same text only.
+                | optional
+                | Type: integer
+                | Default value: 0
+                | Accepted values: 0 .. +inf
             nex.min_confidence = The threshold for the confidence value; entities with a confidence value below this
                 threshold will be discarded. Confidence is a numeric estimation of the quality of the annotation, which
                 ranges between 0 and 1. A higher threshold means you will get less but more precise annotations.
@@ -336,6 +370,14 @@ class TextSimilarity(BaseDandelionParamsRequest):
                 | Type	string
                 | Default value: <empty string>
                 | Accepted values: any valid spots-ID
+            nex.epsilon = This parameter defines whether the Entity Extraction API should rely more on the context or
+                favor more common topics to discover entities. Using an higher value favors more common topics, this may
+                lead to better results when processing tweets or other fragmented inputs where the context is not always
+                reliable.
+                | optional
+                | Type	float
+                | Default value: 0.3
+                | Accepted values: 0.0 .. 0.5
         """
 
         keys_allowed = [
@@ -343,6 +385,7 @@ class TextSimilarity(BaseDandelionParamsRequest):
             'text2', 'url2', 'html2', 'html_fragment2',
             'lang',
             'bow',
+            'nex.top_entities',
             'nex.min_confidence',
             'nex.min_length',
             'nex.social.hashtag',
@@ -351,6 +394,7 @@ class TextSimilarity(BaseDandelionParamsRequest):
             'nex.extra_types',
             'nex.country',
             'nex.custom_spots',
+            'nex.epsilon',
         ]
         keys_unique = [
             ['text1', 'url1', 'html1', 'html_fragment1'],
@@ -419,6 +463,93 @@ class TextClassification(BaseDandelionParamsRequest):
                 | Default value: <empty string>
                 | Accepted values: score_details
                 | Example: include=score_details
+            nex.top_entities = The number of most important entities that must be included in the response.
+                If this value is greater than zero, a ranking algorithm will be applied to sort all entities by their
+                importance with respect to the input text, and the most important ones will be included in the response
+                in addition to the traditional annotations list. This can be useful if you are annotating long texts
+                where the annotations list could contain dozens of entities but you would like to select only a few of
+                them to represent the main topics of the text better.
+                For each entity, a score representing its importance will be included. Note that this score is not
+                absolute, but can be used to compare the importance of entities of the same text only.
+                | optional
+                | Type: integer
+                | Default value: 0
+                | Accepted values: 0 .. +inf
+            nex.min_confidence = The threshold for the confidence value; entities with a confidence value below this
+                threshold will be discarded. Confidence is a numeric estimation of the quality of the annotation, which
+                ranges between 0 and 1. A higher threshold means you will get less but more precise annotations.
+                A lower value means you will get more annotations but also more erroneous ones.
+                | optional
+                | Type: float
+                | Default value: 0.6
+                | Accepted values: 0.0 .. 1.0
+            nex.min_length = With this parameter you can remove those entities having a spot shorter than a minimum
+                length.
+                | optional
+                | Type: integer
+                | Default value: 2
+                | Accepted values: 2 .. +inf
+            nex.social.hashtag = With this parameter you enable special hashtag parsing to correctly analyze tweets and
+                facebook posts.
+                | optional
+                | Type: boolean
+                | Default value: False
+                | Accepted values: True | False
+            nex.social.mention = With this parameter you enable special mention parsing to correctly analyze tweets and
+                facebook posts.
+                | optional
+                | Type: boolean
+                | Default value: False
+                | Accepted values: True | False
+            nex.include = Returns more information on annotated entities:
+                - "types" adds type information from DBpedia or dandelion. DBpedia types are extracted based on the
+                  lang parameter (e.g. if lang=en, types are extracted from DBpedia english). Please notice that
+                  different DBpedia instances may contain different types for the same resource;
+                - "categories" adds category information from DBpedia/Wikipedia;
+                - "abstract" adds the text of the Wikipedia abstract;
+                - "image" adds a link to an image depicting the tagged entity, as well as a link to the image
+                  thumbnail, served by Wikipedia. Please check the licensing terms of each image on Wikipedia before
+                  using it in your app;
+                - "lod" adds links to equivalent (sameAs) entities in Linked Open Data repositories or other websites.
+                  It currently only supports DBpedia and Wikipedia;
+                - "alternate_labels" adds some other names used when referring to the entity.
+                | optional
+                | Type: comma-separated list
+                | Default value: <empty string>
+                | Accepted values: types, categories, abstract, image, lod, alternate_labels
+                | Example: include=types,lod
+            nex.extra_types = Returns more information on annotated entities:
+                - "phone" enables matching of phone numbers;
+                - "vat" enables matching of VAT IDs (Italian only).
+                Note that these parameters require the country parameter to be set, and VAT IDs will work only for
+                Italy.
+                | optional
+                | Type	comma-separated list
+                | Default value: <empty string>
+                | Accepted values: phone, vat
+                | Example: extra_types=phone,vat
+            nex.country = This parameter specifies the country which we assume VAT and telephone numbers to be coming
+                from.
+                This is important to get correct results, as different countries may adopt different formats.
+                | optional
+                | Type: string
+                | Default value: <empty string>
+                | Accepted values: AD, AE, AM, AO, AQ, AR, AU, BB, BR, BS, BY, CA, CH, CL, CN, CX, DE, FR, GB, HU, IT,
+                                   JP, KR, MX, NZ, PG, PL, RE, SE, SG, US, YT, ZW
+            nex.custom_spots = Enable specific user-defined spots to be used when annotating the text.
+                You can define your own spots or use someone else's ones if they shared the spots-ID with you.
+                | optional
+                | Type	string
+                | Default value: <empty string>
+                | Accepted values: any valid spots-ID
+            nex.epsilon = This parameter defines whether the Entity Extraction API should rely more on the context or
+                favor more common topics to discover entities. Using an higher value favors more common topics, this may
+                lead to better results when processing tweets or other fragmented inputs where the context is not always
+                reliable.
+                | optional
+                | Type	float
+                | Default value: 0.3
+                | Accepted values: 0.0 .. 0.5
         """
 
         keys_allowed = [
@@ -427,6 +558,16 @@ class TextClassification(BaseDandelionParamsRequest):
             'min_score',
             'max_annotations',
             'include',
+            'nex.top_entities',
+            'nex.min_confidence',
+            'nex.min_length',
+            'nex.social.hashtag',
+            'nex.social.mention',
+            'nex.include',
+            'nex.extra_types',
+            'nex.country',
+            'nex.custom_spots',
+            'nex.epsilon',
         ]
         keys_unique = [
             ['text', 'url', 'html', 'html_fragment'],
