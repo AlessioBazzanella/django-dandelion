@@ -11,6 +11,17 @@ All notable changes to this project will be documented in this file.
 The format is based on KeepAChangelog_ and this project adheres to SemanticVersioning_.
 
 
+[0.1.4] - 2017-06-29
+++++++++++++++++++++
+
+Added
+~~~~~
+* Added ``top_entities`` and ``epsilon`` params to ``EntityExtraction``
+* Added ``nex.top_entities`` and ``nex.epsilon`` params to ``TextSimilarity``
+* Added ``nex.top_entities``, ``nex.min_confidence``, ``nex.min_length``, ``nex.social.hashtag``, ``nex.social.mention``, ``nex.include``,
+``nex.extra_types``, ``nex.country``, ``nex.custom_spots`` and ``nex.epsilon`` params to ``TextSimilarity``
+
+
 [0.1.3] - 2017-03-14
 ++++++++++++++++++++
 
